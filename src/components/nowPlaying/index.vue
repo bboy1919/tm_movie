@@ -3,7 +3,7 @@
     <Loading v-if="isLoading"/>
     <Scroller v-else :handleToScroll="handleToScroll" :handleToTouchEnd="handleToTouchEnd">
       <ul>
-        <li >{{ pullDownMsg }}</li>
+        <li class="pull">{{ pullDownMsg }}</li>
         <li v-for="item in nPlayingList" :key="item.id">
           <div class="pic_show" @tap="handleToDetail">
             <img :src="item.img | setWH('128.180')" />
@@ -84,6 +84,7 @@ export default {
   border-bottom: 1px #e6e6e6 solid;
   padding-bottom: 10px;
 }
+.movie_body .pull{margin: 0;border: 0px; top: 0; padding:0;}
 .movie_body .pic_show {
   width: 64px;
   height: 90px;
