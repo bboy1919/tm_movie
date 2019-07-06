@@ -1,38 +1,43 @@
 <template>
   <div class="movie_body">
-    <ul>
-      <li v-for="item in comingList" :key="item.id">
-        <div class="pic_show">
-          <img :src ="item.img | setWH('128.180')" >
-        </div>
-        <div class="info_list">
-          <h2>{{ item.nm }}</h2>
-          <p>
-            <span class="person">{{ item.wish }}</span> 人想看
-          </p>
-          <p>主演: {{ item.star }}</p>
-          <p>{{ item.showInfo }}</p>
-        </div>
-        <div class="btn_pre">预售</div>
-      </li>
-      
-    </ul>
+    <Scroller>
+      <ul>
+        <li v-for="item in comingList" :key="item.id">
+          <div class="pic_show">
+            <img :src="item.img | setWH('128.180')" />
+          </div>
+          <div class="info_list">
+            <h2>{{ item.nm }}</h2>
+            <p>
+              <span class="person">{{ item.wish }}</span> 人想看
+            </p>
+            <p>主演: {{ item.star }}</p>
+            <p>{{ item.rt }}上映</p>
+          </div>
+          <div class="btn_pre">预售</div>
+        </li>
+      </ul>
+    </Scroller>
   </div>
 </template>
 
 <script>
 export default {
-    name : "ComingSoon",
-    data(){
-      return {
-        comingList : [],
-      }
-    },
-    mounted () {
-      this.axios.get('/api/movieComingList?cityId=10').then((res)=>{
-        this.comingList = res.data.data.comingList
-      })
-    }
+  name: "ComingSoon",
+  data() {
+    return {
+      comingList: [],
+      preCityId : -1
+    };
+  },
+  activated() {
+    var cityId = this.$store.state.city.id;
+    if (this.preCityId === cityId){ return;}
+    this.axios.get("/api/movieComingList?cityId="+cityId).then(res => {
+      this.comingList = res.data.data.comingList;
+      this.preCityId = cityId;
+    });
+  }
 };
 </script>
 
