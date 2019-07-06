@@ -40,7 +40,8 @@ export default {
   },
   watch : {
     searchkey (skeys) {
-      this.axios.get("/api/searchList?cityId=10&kw="+skeys).then((res)=>{
+      var cityId = this.$store.state.city.id;
+      this.axios.get("/api/searchList?cityId="+ cityId +"&kw="+skeys).then((res)=>{
         var sm = res.data.data.movies
         var msg = res.data.msg
         if (sm && msg==="ok"){

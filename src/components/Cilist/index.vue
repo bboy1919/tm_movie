@@ -1,68 +1,79 @@
 <template>
   <div class="cinema_body">
-    <ul>
-      <li v-for="item in cinemaList" :key="item.id">
-        <div>
-          <span>{{ item.nm }}</span>
-          <span class="q">
-            <span class="price">{{ item.sellPrice }}</span> 元起
-          </span>
-        </div>
-        <div class="address">
-          <span>{{ item.addr }}</span>
-          <span>{{ item.distance }}</span>
-        </div>
-        <div class="card">
-          <div v-for="(num, key) in item.tag" v-if="num===1" :key="key" :class="key | formatCss">{{key | formatCard}}</div>
-        </div>
-      </li>
-    </ul>
+    <Scroller>
+      <ul>
+        <li v-for="item in cinemaList" :key="item.id">
+          <div>
+            <span>{{ item.nm }}</span>
+            <span class="q">
+              <span class="price">{{ item.sellPrice }}</span> 元起
+            </span>
+          </div>
+          <div class="address">
+            <span>{{ item.addr }}</span>
+            <span>{{ item.distance }}</span>
+          </div>
+          <div class="card">
+            <div
+              v-for="(num, key) in item.tag"
+              v-if="num===1"
+              :key="key"
+              :class="key | formatCss"
+            >{{key | formatCard}}</div>
+          </div>
+        </li>
+      </ul>
+    </Scroller>
   </div>
 </template>
 
 <script>
 export default {
   name: "Cilist",
-  data(){
-      return {
-        cinemaList : [],
-      }
-    },
-    mounted () {
-      this.axios.get('/api/cinemaList?cityId=10').then((res)=>{
-        this.cinemaList = res.data.data.cinemas
-      })
-    },
-    filters : {
-      formatCard(key){
-        var card = [
-          { key : 'allowRefund', value : '改签'},
-          { key : 'endorse', value : '退'},
-          { key : 'sell', value : '折扣卡'},
-          { key : 'snack', value : '小吃'},
-        ]
-        for(var i=0;i<card.length;i++){
-          if(card[i].key===key){
-            return card[i].value
-          }
+  data() {
+    return {
+      cinemaList: [],
+      preCityId : -1
+    };
+  },
+  activated() {
+    var cityId = this.$store.state.city.id;
+    if (this.preCityId === cityId){ return;} 
+    this.axios.get("/api/cinemaList?cityId="+ cityId).then(res => {
+      this.cinemaList = res.data.data.cinemas;
+      this.preCityId = cityId;
+    });
+  },
+  filters: {
+    formatCard(key) {
+      var card = [
+        { key: "allowRefund", value: "改签" },
+        { key: "endorse", value: "退" },
+        { key: "sell", value: "折扣卡" },
+        { key: "snack", value: "小吃" }
+      ];
+      for (var i = 0; i < card.length; i++) {
+        if (card[i].key === key) {
+          return card[i].value;
         }
-        return ''
-      },
-      formatCss(key){
-        var card = [
-          { key : 'allowRefund', value : 'bl'},
-          { key : 'endorse', value : 'bl'},
-          { key : 'sell', value : 'or'},
-          { key : 'snack', value : 'or'},
-        ]
-        for(var i=0;i<card.length;i++){
-          if(card[i].key===key){
-            return card[i].value
-          }
-        }
-        return ''
       }
+      return "";
+    },
+    formatCss(key) {
+      var card = [
+        { key: "allowRefund", value: "bl" },
+        { key: "endorse", value: "bl" },
+        { key: "sell", value: "or" },
+        { key: "snack", value: "or" }
+      ];
+      for (var i = 0; i < card.length; i++) {
+        if (card[i].key === key) {
+          return card[i].value;
+        }
+      }
+      return "";
     }
+  }
 };
 </script>
 
