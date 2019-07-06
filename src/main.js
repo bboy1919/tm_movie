@@ -16,7 +16,8 @@ Vue.component('Loading', Loading)
 Vue.config.productionTip = false
 
 Vue.filter("setWH",(url, args)=>{
-  return url.replace(/w\.h/,args);
+  
+  return url.replace('w\.h',args);
 })
 
 new Vue({

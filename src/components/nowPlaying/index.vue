@@ -5,7 +5,7 @@
       <ul>
         <li class="pull">{{ pullDownMsg }}</li>
         <li v-for="item in nPlayingList" :key="item.id">
-          <div class="pic_show" @tap="handleToDetail">
+          <div class="pic_show" @tap="handleToDetail(item.id)">
             <img :src="item.img | setWH('128.180')" />
           </div>
           <div class="info_list">
@@ -49,8 +49,8 @@ export default {
     });
   },
   methods: {
-    handleToDetail() {
-      console.log("ss");
+    handleToDetail(movieId) {
+      this.$router.push('/movie/detail/'+movieId);
     },
 
     handleToScroll(pos) {
