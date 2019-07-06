@@ -19,7 +19,9 @@
         <router-view></router-view>
       </keep-alive>
       <TabBar />
+      
     </div>
+    <router-view name="detail"/>
   </div>
 </template>
 
@@ -53,7 +55,7 @@ export default {
               window.localStorage.setItem('nowId', id);
               window.location.reload();
             }
-          })
+          });
         }
       })
     }, 3000);
